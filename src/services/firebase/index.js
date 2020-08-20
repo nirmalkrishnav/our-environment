@@ -1,6 +1,8 @@
 import FirebaseContext from './';
-import Firebase from './firebase';
+import Firebase from './';
 
 export default Firebase;
-// https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial
 export { FirebaseContext };
+
+
+// https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial
