@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import ReactMapGL, { Marker, GeolocateControl, NavigationControl } from 'react-map-gl';
 import Sidebar from './components/sidebar/Sidebar';
+import './tailwind.output.css';
 
 class App extends React.Component {
   state = {
