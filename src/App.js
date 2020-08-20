@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import ReactMapGL, { Marker, GeolocateControl } from 'react-map-gl';
+import ReactMapGL, { Marker, GeolocateControl, NavigationControl } from 'react-map-gl';
+import Sidebar from './components/sidebar/Sidebar';
 
 class App extends React.Component {
   state = {
@@ -38,21 +39,34 @@ class App extends React.Component {
 
   render() {
     return (
-      <ReactMapGL mapStyle="mapbox://styles/nirmalkrishnav/cke1kci6u012d1an799uhgqbw" {...this.state.viewPort} mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN} onViewportChange={viewPort => { this.setViewport(viewPort) }} onClick={this.mapClicked}>
-        <GeolocateControl
-          positionOptions={{ enableHighAccuracy: true }}
-          trackUserLocation={true}
-        />
+      <div>
 
-        {this.state.features.map((dirt, index) => {
-          return <Marker key={index} longitude={dirt.geometry.coordinates[0]} latitude={dirt.geometry.coordinates[1]} onClick={e => this.markerClicked(e, dirt)} captureClick={true}>
-            <span role="img" aria-label="dirt">💩</span>
-          </Marker>
-
-        })}
+        <Sidebar />
+        <ReactMapGL mapStyle="mapbox://styles/nirmalkrishnav/cke1kci6u012d1an799uhgqbw" {...this.state.viewPort} mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN} onViewportChange={viewPort => { this.setViewport(viewPort) }} onClick={this.mapClicked}>
 
 
-      </ReactMapGL>
+          <div style={{ position: 'absolute', right: '50px', bottom: '50px', zIndex: 100 }}>
+            <div style={{ marginBottom: '15px' }}>
+              <NavigationControl />
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+              <GeolocateControl
+                positionOptions={{ enableHighAccuracy: true }}
+                trackUserLocation={true} style={{ zIndex: 100 }}
+              />
+            </div>
+          </div>
+
+          {this.state.features.map((dirt, index) => {
+            return <Marker key={index} longitude={dirt.geometry.coordinates[0]} latitude={dirt.geometry.coordinates[1]} onClick={e => this.markerClicked(e, dirt)} captureClick={true}>
+              <span role="img" aria-label="dirt">💩</span>
+            </Marker>
+
+          })}
+
+        </ReactMapGL>
+      </div>
     );
   }
 }
