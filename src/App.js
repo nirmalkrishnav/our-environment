@@ -40,7 +40,9 @@ class App extends React.Component {
     return (
       <div>
 
-        <Sidebar />
+        <div className="invisible md:visible lg:visible">
+          <Sidebar />
+        </div>
         <ReactMapGL mapStyle="mapbox://styles/nirmalkrishnav/cke1kci6u012d1an799uhgqbw" {...this.state.viewPort} mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN} onViewportChange={viewPort => { this.setViewport(viewPort) }} onClick={this.mapClicked}>
 
 
