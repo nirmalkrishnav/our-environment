@@ -34,8 +34,7 @@ class App extends React.Component {
     e.preventDefault();
     console.log(dirt)
   }
-  componentDidMount() {
-
+  componentDidMount()   
   }
 
   render() {
