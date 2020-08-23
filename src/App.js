@@ -27,6 +27,7 @@ class App extends React.Component {
       }
     }
     this.setState({ features: [...this.state.features, obj] })
+    
     console.log(this.state)
   }
 
