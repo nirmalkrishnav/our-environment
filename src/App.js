@@ -20,17 +20,24 @@ class App extends React.Component {
   setViewport = (vp) => this.setState({ viewPort: vp });
 
   mapClicked = (e) => {
-    this.addMarker(e.lngLat[0], e.lngLat[1]);
+    const obj = {
+      loc: {
+        properties: {
+          name: "name",
+          type: "point"
+        },
+        geometry: {
+          coordinates: [
+            e.lngLat[0],
+            e.lngLat[1]
+          ]
+        }
+      }
+    };
+    this.saveMarkerData(obj)
   }
 
-  addMarker = (lng, lat) => {
-    const obj = {
-      properties: { name: new Date().toISOString },
-      geometry: {
-        coordinates: [lng, lat]
-      }
-    }
-    this.saveMarkerData(obj);
+  addMarker = (obj) => {
     this.setState({ features: [...this.state.features, obj] })
     console.log(this.state)
   }
@@ -43,16 +50,14 @@ class App extends React.Component {
   getTrashData = () => {
     axios.get('http://localhost:5500/trash').then(resp => resp = resp.data).then(data => {
       data.forEach(element => {
-        this.addMarker(element.lng, element.lat);
+        this.addMarker(element.loc);
       });
     });
   }
 
   saveMarkerData = (obj) => {
     axios.post('http://localhost:5500/trash/add', obj).then(resp => resp = resp.data).then(data => {
-      data.forEach(element => {
-        this.addMarker(element.lng, element.lat);
-      });
+      this.addMarker(obj.loc)
     });
   }
 
