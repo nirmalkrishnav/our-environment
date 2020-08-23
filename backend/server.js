@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 // app files
-const habitRouter = require('./routes/habit.route');
+const trashRouter = require('./routes/trash.route');
 const userRouter = require('./routes/user.route');
 
 const app = express();
@@ -22,9 +22,7 @@ connection.once('open', () => {
 app.use(cors());
 app.use(express.json());
 
-app.use('/habits', habitRouter);
-app.use('/users', userRouter);
-
+app.use('/trash', trashRouter);
 
 app.listen(port, () => {
     console.log(`🚀 Backend service is running on http://localhost:${port}`)

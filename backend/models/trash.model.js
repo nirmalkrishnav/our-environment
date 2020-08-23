@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
-const habitSchema = new schema({
-    username: {
-        type: String,
+const trashModel = new schema({
+    lng: {
+        type: Number,
         required: true,
     },
-    description: {
-        type: String,
+    lat: {
+        type: Number,
         required: true
     },
-    duration: {
+    intensity: {
         type: Number,
         required: true,
     },
@@ -25,6 +25,6 @@ const habitSchema = new schema({
     }
 )
 
-const Habit = mongoose.model('Habit', habitSchema);
+const Trash = mongoose.model('Trash', trashModel);
 
-module.exports = Habit;
+module.exports = Trash;
