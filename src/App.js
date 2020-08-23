@@ -3,6 +3,7 @@ import './App.css';
 import ReactMapGL, { Marker, GeolocateControl, NavigationControl } from 'react-map-gl';
 import Sidebar from './components/sidebar/Sidebar';
 import './tailwind.output.css';
+import axios from 'axios';
 
 class App extends React.Component {
   state = {
@@ -17,17 +18,20 @@ class App extends React.Component {
   }
 
   setViewport = (vp) => this.setState({ viewPort: vp });
-  mapClicked = (e) => this.addMarker(e.lngLat[0], e.lngLat[1])
+
+  mapClicked = (e) => {
+    this.addMarker(e.lngLat[0], e.lngLat[1]);
+  }
 
   addMarker = (lng, lat) => {
     const obj = {
-      properties: { name: lng },
+      properties: { name: new Date().toISOString },
       geometry: {
         coordinates: [lng, lat]
       }
     }
+    this.saveMarkerData(obj);
     this.setState({ features: [...this.state.features, obj] })
-    
     console.log(this.state)
   }
 
@@ -35,7 +39,26 @@ class App extends React.Component {
     e.preventDefault();
     console.log(dirt)
   }
-  componentDidMount = () => { }
+
+  getTrashData = () => {
+    axios.get('http://localhost:5500/trash').then(resp => resp = resp.data).then(data => {
+      data.forEach(element => {
+        this.addMarker(element.lng, element.lat);
+      });
+    });
+  }
+
+  saveMarkerData = (obj) => {
+    axios.post('http://localhost:5500/trash/add', obj).then(resp => resp = resp.data).then(data => {
+      data.forEach(element => {
+        this.addMarker(element.lng, element.lat);
+      });
+    });
+  }
+
+  componentDidMount = () => {
+    this.getTrashData();
+  }
 
   render() {
     return (
@@ -44,7 +67,11 @@ class App extends React.Component {
         <div className="invisible md:visible lg:visible">
           <Sidebar />
         </div>
-        <ReactMapGL mapStyle="mapbox://styles/nirmalkrishnav/cke1kci6u012d1an799uhgqbw" {...this.state.viewPort} mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN} onViewportChange={viewPort => { this.setViewport(viewPort) }} onClick={this.mapClicked}>
+        <ReactMapGL
+          mapboxApiAccessToken={process.env.REACT_APP_MAP_BOX_TOKEN}
+          mapStyle="mapbox://styles/nirmalkrishnav/cke1kci6u012d1an799uhgqbw" {...this.state.viewPort}
+          onViewportChange={viewPort => { this.setViewport(viewPort) }}
+          onClick={this.mapClicked}>
 
 
           <div style={{ position: 'absolute', right: '50px', bottom: '50px', zIndex: 100 }}>
